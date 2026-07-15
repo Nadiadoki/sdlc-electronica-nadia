@@ -16,3 +16,13 @@
 * Qué produjo la IA: semana1/fsm\_demo.py con TrafficLightState (Enum) y TrafficLightFSM (propiedades state y cycle\_count, método transition), y semana1/test\_fsm.py con los 4 tests pedidos.
 * Decisión: Acepté la lógica de la FSM y los 4 tests tal cual, pasaron a la primera corrida. Pero ruff marcó el Enum (RED = auto(); YELLOW = auto(); GREEN = auto()) como mala práctica por tener múltiples statements en una sola línea con punto y coma — lo separé en tres líneas independientes. También noté que el código original no exponía \_cycle\_count hacia afuera, así que agregué una propiedad cycle\_count para poder verificarlo desde los tests.
 
+
+
+##### Fecha: 15/07/2026 (Día 3 · Miércoles)
+
+* Prompt: "Ayúdame con la actividad del día 3: implementar SRP, OCP y LSP con el dominio de sensores en solid\_srp\_ocp\_lsp.py, con ejemplo 'mal' y 'bien' de cada principio, más 2 tests por principio."
+* Qué produjo la IA: semana1/dia3/solid\_srp\_ocp\_lsp.py con los 3 principios (SRP: SensorHandlerMal vs SensorReader/DataLogger; OCP: enviar\_alerta\_mal vs AlertStrategy/AnomalyDetector; LSP: HumiditySensorMal vs TemperatureSensor/HumiditySensor con process\_sensor), y test\_solid.py con 6 tests (2 por principio).
+* Decisión: Acepté la estructura tal cual, los 16 tests pasaron y ruff no marcó nada. Pero mypy sí detectó que HumiditySensorMal.read() tenía una firma incompatible con BaseSensor (error \[override]) — que era justo el punto del ejemplo "mal" de LSP. En vez de "arreglarlo" (lo que anularía el ejemplo), agregué un comentario # type: ignore\[override] para documentar que la violación era intencional.
+
+
+
