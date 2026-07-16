@@ -26,3 +26,9 @@
 
 
 
+##### Fecha: 16/07/2026 (Día 4 · Jueves)
+
+* Prompt: "Ayúdame con la actividad del día 4: completar SOLID con ISP y DIP en solid\_isp\_dip.py — dividir una interfaz gorda en Readable/Writable/Calibratable, y usar Protocol para que DataProcessor dependa de una abstracción DataRepository."
+* Qué produjo la IA: semana1/dia4/solid\_isp\_dip.py con ISP (SensorDeviceMal vs. Readable/Writable/Calibratable, usadas por SimpleSensor y AdvancedSensor) y DIP (DataProcessorMal acoplado a PostgreSQLRepositoryMal vs. DataProcessor que recibe cualquier DataRepository por inyección de dependencias), y test\_solid\_isp\_dip.py con 4 tests.
+* Decisión: Acepté la estructura tal cual. Los tests, mypy y ruff pasaron sin errores a la primera. Lo que más me quedó claro fue el DIP: en el test test\_data\_processor\_no\_conoce\_implementacion\_concreta uso un repositorio inventado en el momento (OtroRepoFake) y DataProcessor funciona igual sin cambiar nada — eso es la inyección de dependencias funcionando de verdad.
+
