@@ -32,3 +32,11 @@
 * Qué produjo la IA: semana1/dia4/solid\_isp\_dip.py con ISP (SensorDeviceMal vs. Readable/Writable/Calibratable, usadas por SimpleSensor y AdvancedSensor) y DIP (DataProcessorMal acoplado a PostgreSQLRepositoryMal vs. DataProcessor que recibe cualquier DataRepository por inyección de dependencias), y test\_solid\_isp\_dip.py con 4 tests.
 * Decisión: Acepté la estructura tal cual. Los tests, mypy y ruff pasaron sin errores a la primera. Lo que más me quedó claro fue el DIP: en el test test\_data\_processor\_no\_conoce\_implementacion\_concreta uso un repositorio inventado en el momento (OtroRepoFake) y DataProcessor funciona igual sin cambiar nada — eso es la inyección de dependencias funcionando de verdad.
 
+
+
+##### Fecha: 17/07/2026 (Día 5 · Viernes)
+
+* Prompt: "Ayúdame con el ejercicio integrador del día 5: reimplementar un driver UART de C (buffers globales, parsing mezclado, no testeable) en Python moderno aplicando SOLID completo, en semana1/uart\_driver/ con config.py, parsers.py, device.py, recorder.py y tests/ con al menos 3 tests por clase."
+* Qué produjo la IA: UartConfig (dataclass frozen con validación), MessageParser (ABC) con ModbusParser y NMEAParser, UartDevice (recibe config y parser por inyección de dependencias) y DataRecorder (persiste como JSON-lines), más 13 tests en tests/ (incluyendo un conftest.py para que los tests puedan importar los módulos desde la subcarpeta).
+* Decisión: Acepté la estructura completa. Los 33 tests de la semana pasaron, mypy no encontró errores en los 4 módulos y ruff no marcó nada. Lo que más valoro de este diseño es que UartDevice no conoce ningún puerto real: en los tests uso un FakePort inventado, y en producción sería un puerto serial de verdad — el driver original en C no permitía esto porque todo dependía de buffers globales.
+
