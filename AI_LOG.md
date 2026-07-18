@@ -40,3 +40,11 @@
 * Qué produjo la IA: UartConfig (dataclass frozen con validación), MessageParser (ABC) con ModbusParser y NMEAParser, UartDevice (recibe config y parser por inyección de dependencias) y DataRecorder (persiste como JSON-lines), más 13 tests en tests/ (incluyendo un conftest.py para que los tests puedan importar los módulos desde la subcarpeta).
 * Decisión: Acepté la estructura completa. Los 33 tests de la semana pasaron, mypy no encontró errores en los 4 módulos y ruff no marcó nada. Lo que más valoro de este diseño es que UartDevice no conoce ningún puerto real: en los tests uso un FakePort inventado, y en producción sería un puerto serial de verdad — el driver original en C no permitía esto porque todo dependía de buffers globales.
 
+##### 
+
+##### Fecha: 18/07/2026 (Día 6 · Sábado — cierre de sesión)
+
+* Prompt: "Ayúdame a hacer el cierre del día 6: correr cobertura, ruff, mypy y revisar el historial de commits."
+* Qué produjo la IA: Los comandos exactos a correr (pytest --cov, ruff check, mypy --ignore-missing-imports, git log --oneline) y ayuda para armar la nota de entrega con el mapeo de rutas del portafolio.
+* Decisión: No hubo código nuevo que aceptar o rechazar hoy — fue verificación. Resultados: 95% de cobertura, ruff limpio, mypy sin errores en 18 archivos, 9 commits descriptivos. Todo pasó sin necesidad de ajustes.
+
