@@ -1,5 +1,5 @@
-from sensors import SensorReading, SensorType
 from anomaly import AnomalyDetector
+from sensors import SensorReading, SensorType
 
 
 def test_temperatura_dentro_del_rango_no_es_anomalia():

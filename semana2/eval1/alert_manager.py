@@ -1,5 +1,6 @@
 from anomaly import AnomalyDetector
 from sensors import SensorReading
+from alerts import AlertStrategy
 
 
 class AlertManager:
@@ -10,7 +11,7 @@ class AlertManager:
     FileAlert, o cualquier otra estrategia que respete la interfaz.
     """
 
-    def __init__(self, detector: AnomalyDetector, alert) -> None:
+    def __init__(self, detector: AnomalyDetector, alert: AlertStrategy) -> None:
         self._detector = detector
         self._alert = alert
 

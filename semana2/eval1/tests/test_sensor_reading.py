@@ -1,5 +1,4 @@
 import pytest
-
 from sensors import SensorReading, SensorType
 
 
