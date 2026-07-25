@@ -78,3 +78,39 @@
 * Qué produjo la IA: DEFINITION\_OF\_DONE.md con 5 escenarios Gherkin, pyproject.toml con reglas de ruff, cobertura ≥80% y mypy con disallow\_untyped\_defs, y el flujo completo de rama + PR + merge.
 * Decisión: Al activar disallow\_untyped\_defs, mypy marcó 33 errores en todos mis archivos de test. Decidí no anotar cada función de test a mano (no es práctica común exigir tipos tan estrictos en tests) y en su lugar configuré una exclusión. El primer intento con module = "test\_\*" falló porque mypy no acepta asteriscos parciales en nombres de módulo; funcionó al cambiar a exclude con una expresión regular sobre la ruta del archivo ('(^|/)test\_.\*\\.py$'). También tuve que corregir una sección \[tool.mypy] duplicada en el archivo. Al final: mypy limpio en 10 archivos de código real, tests sin exigencia de tipos.
 
+
+
+##### 
+
+##### Fecha: 25/07/2026 (Semana 2 · Día 5/Sábado · Evaluación 1)
+
+
+
+* Prompt 1: "Ayúdame a construir el Product Backlog y el Sprint 1 Planning para el sistema de monitoreo IoT, con 10+ historias en Gherkin, MoSCoW y tareas ≤4h."
+
+Qué produjo la IA: 13 historias con Gherkin y story points, priorizadas MoSCoW, y la selección justificada de las 6 Must para el Sprint 1 con su desglose en tareas.
+
+Decisión: Acepté la estructura completa. Antes de avanzar, la leí con calma para poder justificar cada priorización si me preguntan en la sesión de evaluación.
+
+* Prompt 2: "Guíame en TDD estricto (Red→Green) para implementar SensorReading, AnomalyDetector con umbral inyectado, y AlertManager con estrategia abstracta."
+
+Qué produjo la IA: El código de cada ciclo, paso a paso, exigiendo confirmar el fallo (RED) antes de dar la implementación (GREEN).
+
+Decisión: Seguí el flujo completo, con dos correcciones propias en el camino: un test que terminó pegado por error dentro de alerts.py (lo tuve que mover a su archivo correcto), y un ajuste de tipos en AlertManager que pedía mypy. Ambos quedan documentados en la Retrospective.
+
+* Prompt 3: "Escribe la Sprint Retrospective con hallazgos reales de esta sesión, no genéricos."
+
+Qué produjo la IA: Una retrospectiva que documenta específicamente los errores de esta sesión (código en archivo equivocado, ajuste de configuración de mypy) con una acción concreta para el próximo sprint.
+
+Decisión: La acepté tal cual — preferí que reflejara los tropiezos reales en vez de una retrospectiva "bonita" sin sustancia, ya que la rúbrica valora el uso reflexivo de la IA, no solo el resultado final.
+
+
+
+
+
+
+
+
+
+
+
