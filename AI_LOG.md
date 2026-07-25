@@ -48,11 +48,11 @@
 
 ##### Fecha: 21/07/2026 (Semana 2 · Día 2 · Martes)
 
-*Prompt: "Ayúdame con el ejercicio del día 2: escribir el Product Backlog como user stories con escenarios Gherkin y story points Fibonacci en semana2/backlog.md, y después úsate como crítica auditando cada historia: ¿es verificable? ¿es ambigua? ¿qué caso borde falta?"
+\*Prompt: "Ayúdame con el ejercicio del día 2: escribir el Product Backlog como user stories con escenarios Gherkin y story points Fibonacci en semana2/backlog.md, y después úsate como crítica auditando cada historia: ¿es verificable? ¿es ambigua? ¿qué caso borde falta?"
 
-*Qué produjo la IA: semana2/dia2/backlog.md con 5 historias de usuario (registrar lectura, consultar historial, configurar umbral, notificación por umbral, soporte multi-protocolo Modbus/NMEA), cada una con escenarios Gherkin y story points. Después, una auditoría crítica de las 5 historias.
+\*Qué produjo la IA: semana2/dia2/backlog.md con 5 historias de usuario (registrar lectura, consultar historial, configurar umbral, notificación por umbral, soporte multi-protocolo Modbus/NMEA), cada una con escenarios Gherkin y story points. Después, una auditoría crítica de las 5 historias.
 
-*Decisión: Acepté las 5 historias tal cual para el backlog. La auditoría fue el episodio más valioso: la IA detectó que varias historias (US-01, US-03, US-04) asumían reglas de negocio nunca definidas — por ejemplo, qué rango de valores es físicamente válido para un sensor, si configurar un umbral también cubre actualizarlo, y si "superar" un umbral es > o >=. No modifiqué el backlog todavía (decidí dejarlo así por ahora y documentar los huecos encontrados), pero esto muestra que Gherkin bien auditado expone ambigüedades de negocio que no se ven a simple vista al escribir la historia.
+\*Decisión: Acepté las 5 historias tal cual para el backlog. La auditoría fue el episodio más valioso: la IA detectó que varias historias (US-01, US-03, US-04) asumían reglas de negocio nunca definidas — por ejemplo, qué rango de valores es físicamente válido para un sensor, si configurar un umbral también cubre actualizarlo, y si "superar" un umbral es > o >=. No modifiqué el backlog todavía (decidí dejarlo así por ahora y documentar los huecos encontrados), pero esto muestra que Gherkin bien auditado expone ambigüedades de negocio que no se ven a simple vista al escribir la historia.
 
 * Prompt: "Ayúdame a hacer el cierre del día 6: correr cobertura, ruff, mypy y revisar el historial de commits."
 * Qué produjo la IA: Los comandos exactos a correr (pytest --cov, ruff check, mypy --ignore-missing-imports, git log --oneline) y ayuda para armar la nota de entrega con el mapeo de rutas del portafolio.
@@ -67,4 +67,14 @@
 * Prompt: "Guíame paso a paso en TDD estricto para implementar SensorRegistry: cada commit de test debe preceder al commit del código, siguiendo el ciclo RED-GREEN-REFACTOR."
 * Qué produjo la IA: El código para 3 ciclos completos de TDD (verificar sensor inexistente, registrar y recuperar una lectura, validar que el sensor\_id no esté vacío) y el refactor final que extrae la validación a un método privado.
 * Decisión: Seguí el flujo tal cual, con una corrección propia en el camino: al escribir record() a mano dejé mal la indentación (quedó fuera de la clase) y pytest lo detectó de inmediato como IndentationError. Tuve que reescribir el archivo completo para corregirlo. Fue un buen recordatorio de que en TDD el test no solo verifica la lógica — también atrapa errores básicos de sintaxis antes de que lleguen a producción.
+
+##### 
+
+##### Fecha: 23/07/2026 (Semana 2 · Día 4 · Jueves)
+
+
+
+* Prompt: "Ayúdame con el día 4: escribir la Definition of Done en Gherkin, configurar pyproject.toml con ruff/pytest-cov/mypy estrictos, y trabajar con ramas y PR."
+* Qué produjo la IA: DEFINITION\_OF\_DONE.md con 5 escenarios Gherkin, pyproject.toml con reglas de ruff, cobertura ≥80% y mypy con disallow\_untyped\_defs, y el flujo completo de rama + PR + merge.
+* Decisión: Al activar disallow\_untyped\_defs, mypy marcó 33 errores en todos mis archivos de test. Decidí no anotar cada función de test a mano (no es práctica común exigir tipos tan estrictos en tests) y en su lugar configuré una exclusión. El primer intento con module = "test\_\*" falló porque mypy no acepta asteriscos parciales en nombres de módulo; funcionó al cambiar a exclude con una expresión regular sobre la ruta del archivo ('(^|/)test\_.\*\\.py$'). También tuve que corregir una sección \[tool.mypy] duplicada en el archivo. Al final: mypy limpio en 10 archivos de código real, tests sin exigencia de tipos.
 
