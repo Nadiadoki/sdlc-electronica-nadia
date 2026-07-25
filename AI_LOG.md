@@ -44,6 +44,16 @@
 
 ##### Fecha: 18/07/2026 (Día 6 · Sábado — cierre de sesión)
 
+## Semana 2
+
+##### Fecha: 21/07/2026 (Semana 2 · Día 2 · Martes)
+
+*Prompt: "Ayúdame con el ejercicio del día 2: escribir el Product Backlog como user stories con escenarios Gherkin y story points Fibonacci en semana2/backlog.md, y después úsate como crítica auditando cada historia: ¿es verificable? ¿es ambigua? ¿qué caso borde falta?"
+
+*Qué produjo la IA: semana2/dia2/backlog.md con 5 historias de usuario (registrar lectura, consultar historial, configurar umbral, notificación por umbral, soporte multi-protocolo Modbus/NMEA), cada una con escenarios Gherkin y story points. Después, una auditoría crítica de las 5 historias.
+
+*Decisión: Acepté las 5 historias tal cual para el backlog. La auditoría fue el episodio más valioso: la IA detectó que varias historias (US-01, US-03, US-04) asumían reglas de negocio nunca definidas — por ejemplo, qué rango de valores es físicamente válido para un sensor, si configurar un umbral también cubre actualizarlo, y si "superar" un umbral es > o >=. No modifiqué el backlog todavía (decidí dejarlo así por ahora y documentar los huecos encontrados), pero esto muestra que Gherkin bien auditado expone ambigüedades de negocio que no se ven a simple vista al escribir la historia.
+
 * Prompt: "Ayúdame a hacer el cierre del día 6: correr cobertura, ruff, mypy y revisar el historial de commits."
 * Qué produjo la IA: Los comandos exactos a correr (pytest --cov, ruff check, mypy --ignore-missing-imports, git log --oneline) y ayuda para armar la nota de entrega con el mapeo de rutas del portafolio.
 * Decisión: No hubo código nuevo que aceptar o rechazar hoy — fue verificación. Resultados: 95% de cobertura, ruff limpio, mypy sin errores en 18 archivos, 9 commits descriptivos. Todo pasó sin necesidad de ajustes.
