@@ -48,3 +48,13 @@
 * Qué produjo la IA: Los comandos exactos a correr (pytest --cov, ruff check, mypy --ignore-missing-imports, git log --oneline) y ayuda para armar la nota de entrega con el mapeo de rutas del portafolio.
 * Decisión: No hubo código nuevo que aceptar o rechazar hoy — fue verificación. Resultados: 95% de cobertura, ruff limpio, mypy sin errores en 18 archivos, 9 commits descriptivos. Todo pasó sin necesidad de ajustes.
 
+##### 
+
+##### Fecha: 22/07/2026 (Semana 2 · Día 3 · Miércoles)
+
+
+
+* Prompt: "Guíame paso a paso en TDD estricto para implementar SensorRegistry: cada commit de test debe preceder al commit del código, siguiendo el ciclo RED-GREEN-REFACTOR."
+* Qué produjo la IA: El código para 3 ciclos completos de TDD (verificar sensor inexistente, registrar y recuperar una lectura, validar que el sensor\_id no esté vacío) y el refactor final que extrae la validación a un método privado.
+* Decisión: Seguí el flujo tal cual, con una corrección propia en el camino: al escribir record() a mano dejé mal la indentación (quedó fuera de la clase) y pytest lo detectó de inmediato como IndentationError. Tuve que reescribir el archivo completo para corregirlo. Fue un buen recordatorio de que en TDD el test no solo verifica la lógica — también atrapa errores básicos de sintaxis antes de que lleguen a producción.
+
