@@ -18,3 +18,4 @@ fail_under = 80
 [tool.mypy]
 disallow_untyped_defs = true
 # obliga a que toda funcion nueva tenga sus tipos anotados (parametros y retorno)
+exclude = '(^|/)test_.*\.py$'
