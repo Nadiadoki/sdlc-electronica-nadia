@@ -1,0 +1,20 @@
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+# E  - errores de estilo (pycodestyle)
+# F  - errores logicos (pyflakes): imports sin usar, variables no definidas, etc.
+# I  - orden de imports (isort)
+# UP - sugerencias para usar sintaxis moderna de Python (pyupgrade)
+# B  - bugs comunes y malas practicas (flake8-bugbear)
+
+[tool.pytest.ini_options]
+addopts = "--cov-fail-under=80"
+
+[tool.coverage.report]
+fail_under = 80
+
+[tool.mypy]
+disallow_untyped_defs = true
+# obliga a que toda funcion nueva tenga sus tipos anotados (parametros y retorno)
