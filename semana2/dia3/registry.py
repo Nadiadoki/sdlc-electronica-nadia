@@ -21,6 +21,9 @@ class SensorRegistry:
         return self._readings[sensor_id]
 
     def record(self, reading: SensorReading) -> None:
+        self._validate_reading(reading)
+        self._readings[reading.sensor_id] = reading
+
+    def _validate_reading(self, reading: SensorReading) -> None:
         if not reading.sensor_id:
             raise ValueError("sensor_id no puede estar vacio")
-        self._readings[reading.sensor_id] = reading
