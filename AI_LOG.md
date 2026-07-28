@@ -44,6 +44,10 @@
 
 ##### Fecha: 18/07/2026 (Día 6 · Sábado — cierre de sesión)
 
+
+
+
+
 ## Semana 2
 
 ##### Fecha: 21/07/2026 (Semana 2 · Día 2 · Martes)
@@ -106,11 +110,13 @@ Decisión: La acepté tal cual — preferí que reflejara los tropiezos reales e
 
 
 
+### Semana 3
+
+##### Fecha: 27/07/2026 (Semana 3 · Día 1 · Lunes)
 
 
 
-
-
-
-
+* Prompt: "Ayúdame con el día 1 de la semana 3: crear app/main.py con FastAPI, endpoints /health y POST /readings, y requirements.txt curado."
+* Qué produjo la IA: app/main.py con SensorReadingIn/SensorReadingOut (Pydantic) y los dos endpoints, más requirements.txt con las 10 dependencias específicas del proyecto.
+* Decisión: Acepté el código tal cual, lo probé en Swagger (/docs) y ambos endpoints funcionaron a la primera. Este día marcó el cambio de trabajar por carpetas de semana a trabajar directamente sobre el producto (app/) en la raíz del repo.
 
