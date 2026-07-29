@@ -120,3 +120,11 @@ Decisión: La acepté tal cual — preferí que reflejara los tropiezos reales e
 * Qué produjo la IA: app/main.py con SensorReadingIn/SensorReadingOut (Pydantic) y los dos endpoints, más requirements.txt con las 10 dependencias específicas del proyecto.
 * Decisión: Acepté el código tal cual, lo probé en Swagger (/docs) y ambos endpoints funcionaron a la primera. Este día marcó el cambio de trabajar por carpetas de semana a trabajar directamente sobre el producto (app/) en la raíz del repo.
 
+##### 
+
+##### Fecha: 29/07/2026 (Semana 3 · Día 2 · Martes)
+
+* Prompt: "Ayúdame con el día 2: crear app/db.py con SQLAlchemy 2.x (API tipada con Mapped), replicando el Quick Start pero con mi modelo ReadingModel."
+* Qué produjo la IA: app/db.py con engine, SessionLocal, Base(DeclarativeBase) y ReadingModel (tabla readings con id, sensor\_id indexado, value, unit, created\_at).
+* Decisión: Acepté el código tal cual y lo verifiqué creando las tablas con Base.metadata.create\_all(engine) — se generó correctamente sensorhub.db. Presté atención especial a usar Mapped\[...] en vez de la sintaxis vieja Column(...) de SQLAlchemy 1.x, como advertía la guía sobre tutoriales desactualizados.
+
