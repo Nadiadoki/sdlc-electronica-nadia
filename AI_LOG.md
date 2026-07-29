@@ -128,3 +128,13 @@ Decisión: La acepté tal cual — preferí que reflejara los tropiezos reales e
 * Qué produjo la IA: app/db.py con engine, SessionLocal, Base(DeclarativeBase) y ReadingModel (tabla readings con id, sensor\_id indexado, value, unit, created\_at).
 * Decisión: Acepté el código tal cual y lo verifiqué creando las tablas con Base.metadata.create\_all(engine) — se generó correctamente sensorhub.db. Presté atención especial a usar Mapped\[...] en vez de la sintaxis vieja Column(...) de SQLAlchemy 1.x, como advertía la guía sobre tutoriales desactualizados.
 
+
+
+##### Fecha: 29/07/2026 (Semana 3 · Día 3 · Miércoles)
+
+
+
+* Prompt: "Ayúdame con el día 3: crear el patrón repositorio (ReadingRepository como Protocol) y ReadingService, y escribir tests con un repositorio fake en memoria sin base de datos real."
+* Qué produjo la IA: app/repositories/reading\_repository.py (Protocol), app/services/reading\_service.py (lógica de negocio dependiente de la abstracción), y 3 tests con un FakeReadingRepository definido dentro del propio archivo de test.
+* Decisión: Acepté el diseño tal cual — es exactamente el mismo patrón DIP que ya había practicado en la semana 1 con DataProcessor/InMemoryRepository, así que reconocí la estructura de inmediato y pude verificar que el fake cumple el Protocol sin heredar de él explícitamente (duck typing de Python).
+
