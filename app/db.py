@@ -18,3 +18,4 @@ class ReadingModel(Base):
     value: Mapped[float]
     unit: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    active: Mapped[bool] = mapped_column(default=True)
