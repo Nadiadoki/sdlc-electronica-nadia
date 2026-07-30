@@ -138,3 +138,11 @@ Decisión: La acepté tal cual — preferí que reflejara los tropiezos reales e
 * Qué produjo la IA: app/repositories/reading\_repository.py (Protocol), app/services/reading\_service.py (lógica de negocio dependiente de la abstracción), y 3 tests con un FakeReadingRepository definido dentro del propio archivo de test.
 * Decisión: Acepté el diseño tal cual — es exactamente el mismo patrón DIP que ya había practicado en la semana 1 con DataProcessor/InMemoryRepository, así que reconocí la estructura de inmediato y pude verificar que el fake cumple el Protocol sin heredar de él explícitamente (duck typing de Python).
 
+
+
+##### Fecha: 30/07/2026 (Semana 3 · Día 4 · Jueves)
+
+* Prompt: "Ayúdame con el día 4: conectar las capas con el sistema de dependencias de FastAPI (Depends) y diseñar los 5 endpoints REST de la tabla, con paginación, filtros de fecha y códigos de error correctos."
+* Qué produjo la IA: app/dependencies.py (cadena de Depends: get\_db → get\_reading\_repository → get\_reading\_service), SQLAlchemyReadingRepository (implementación real del Protocol), ReadingService ampliado con excepciones de dominio propias, y app/routers/readings.py con los 5 endpoints traduciendo esas excepciones a códigos HTTP (400/404/409/422).
+* Decisión: Acepté el diseño de excepciones de dominio (ReadingNotFoundError, ReadingAlreadyInactiveError) en vez de que el servicio lance HTTPException directamente — así el servicio no depende de FastAPI, y es el router quien decide el código HTTP. Verifiqué los 11 tests de integración, todos en verde, cubriendo cada código de estado de la tabla.
+
