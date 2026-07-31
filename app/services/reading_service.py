@@ -1,27 +1,32 @@
 from datetime import datetime
 
 from app.db import ReadingModel
+from app.exceptions import ReadingAlreadyInactiveError, ReadingNotFoundError, SensorNotFoundError
 from app.repositories.reading_repository import ReadingRepository
+from app.repositories.sensor_repository import SensorRepository
 
-CERO_ABSOLUTO = -273.15
-
-
-class ReadingNotFoundError(Exception):
-    """La lectura solicitada no existe."""
-
-
-class ReadingAlreadyInactiveError(Exception):
-    """La lectura ya estaba desactivada; no se puede desactivar de nuevo."""
+RANGOS_FISICOS = {
+    "temperature": (-273.15, 1000.0),
+    "humidity": (0.0, 100.0),
+}
+UNIDADES_VALIDAS = {
+    "temperature": "C",
+    "humidity": "%",
+}
 
 
 class ReadingService:
-    """Logica de negocio. Depende de la abstraccion del repositorio (DIP)."""
+    """Logica de negocio. Depende de abstracciones (DIP): ReadingRepository y SensorRepository."""
 
-    def __init__(self, repo: ReadingRepository) -> None:
+    def __init__(self, repo: ReadingRepository, sensor_repo: SensorRepository) -> None:
         self._repo = repo
+        self._sensor_repo = sensor_repo
 
     def record(self, sensor_id: str, value: float, unit: str) -> ReadingModel:
-        self._validar_valor(value)
+        sensor = self._sensor_repo.get_by_sensor_id(sensor_id)
+        if sensor is None:
+            raise SensorNotFoundError(f"sensor no registrado: {sensor_id}")
+        self._validar(sensor.sensor_type, value, unit)
         return self._repo.add(sensor_id, value, unit)
 
     def get_reading(self, reading_id: int) -> ReadingModel:
@@ -45,12 +50,20 @@ class ReadingService:
     def update_reading(
         self, reading_id: int, value: float | None = None, unit: str | None = None
     ) -> ReadingModel:
-        if value is not None:
-            self._validar_valor(value)
-        reading = self._repo.update(reading_id, value=value, unit=unit)
+        reading = self._repo.get(reading_id)
         if reading is None:
             raise ReadingNotFoundError(f"lectura no encontrada: {reading_id}")
-        return reading
+        if value is not None or unit is not None:
+            sensor = self._sensor_repo.get_by_sensor_id(reading.sensor_id)
+            if sensor is None:
+                raise SensorNotFoundError(f"sensor no registrado: {reading.sensor_id}")
+            valor_final = value if value is not None else reading.value
+            unidad_final = unit if unit is not None else reading.unit
+            self._validar(sensor.sensor_type, valor_final, unidad_final)
+        actualizado = self._repo.update(reading_id, value=value, unit=unit)
+        if actualizado is None:
+            raise ReadingNotFoundError(f"lectura no encontrada: {reading_id}")
+        return actualizado
 
     def deactivate_reading(self, reading_id: int) -> None:
         if self._repo.get(reading_id) is None:
@@ -58,6 +71,15 @@ class ReadingService:
         if not self._repo.deactivate(reading_id):
             raise ReadingAlreadyInactiveError(f"lectura ya estaba inactiva: {reading_id}")
 
-    def _validar_valor(self, value: float) -> None:
-        if value < CERO_ABSOLUTO:
-            raise ValueError("Temperatura por debajo del cero absoluto")
+    def _validar(self, sensor_type: str, value: float, unit: str) -> None:
+        unidad_esperada = UNIDADES_VALIDAS[sensor_type]
+        if unit != unidad_esperada:
+            raise ValueError(
+                f"unidad '{unit}' no valida para sensor tipo {sensor_type}; "
+                f"se esperaba '{unidad_esperada}'"
+            )
+        minimo, maximo = RANGOS_FISICOS[sensor_type]
+        if not (minimo <= value <= maximo):
+            raise ValueError(
+                f"valor {value} fuera de rango fisico para {sensor_type} ({minimo}..{maximo})"
+            )

@@ -4,12 +4,9 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from app.dependencies import get_reading_service
+from app.exceptions import ReadingAlreadyInactiveError, ReadingNotFoundError, SensorNotFoundError
 from app.schemas.reading import ReadingCreate, ReadingOut, ReadingUpdate
-from app.services.reading_service import (
-    ReadingAlreadyInactiveError,
-    ReadingNotFoundError,
-    ReadingService,
-)
+from app.services.reading_service import ReadingService
 
 router = APIRouter()
 
@@ -22,8 +19,8 @@ def list_readings(
     service: ServiceDep,
     limit: int = Query(default=50, ge=1, le=200),
     offset: int = Query(default=0, ge=0),
-    from_: datetime | None = Query(default=None, alias="from"),
-    to: datetime | None = Query(default=None),
+    from_: datetime | None = Query(default=None, alias="from"),  # noqa: B008
+    to: datetime | None = Query(default=None),  # noqa: B008
 ) -> list[ReadingOut]:
     try:
         lecturas = service.list_for_sensor(sensor_id, limit, offset, from_, to)
@@ -38,6 +35,8 @@ def list_readings(
 def create_reading(sensor_id: str, body: ReadingCreate, service: ServiceDep) -> ReadingOut:
     try:
         reading = service.record(sensor_id=sensor_id, value=body.value, unit=body.unit)
+    except SensorNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
@@ -59,6 +58,8 @@ def update_reading(reading_id: int, body: ReadingUpdate, service: ServiceDep) ->
     try:
         reading = service.update_reading(reading_id, value=body.value, unit=body.unit)
     except ReadingNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+    except SensorNotFoundError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(

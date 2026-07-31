@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 
-from app.routers import readings
+from app.routers import readings, sensors
 
-app = FastAPI(title="SensorHub API", version="0.2.0")
+app = FastAPI(title="SensorHub API", version="0.3.0")
 
+app.include_router(sensors.router)
 app.include_router(readings.router)
 
 
