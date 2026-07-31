@@ -146,3 +146,11 @@ Decisión: La acepté tal cual — preferí que reflejara los tropiezos reales e
 * Qué produjo la IA: app/dependencies.py (cadena de Depends: get\_db → get\_reading\_repository → get\_reading\_service), SQLAlchemyReadingRepository (implementación real del Protocol), ReadingService ampliado con excepciones de dominio propias, y app/routers/readings.py con los 5 endpoints traduciendo esas excepciones a códigos HTTP (400/404/409/422).
 * Decisión: Acepté el diseño de excepciones de dominio (ReadingNotFoundError, ReadingAlreadyInactiveError) en vez de que el servicio lance HTTPException directamente — así el servicio no depende de FastAPI, y es el router quien decide el código HTTP. Verifiqué los 11 tests de integración, todos en verde, cubriendo cada código de estado de la tabla.
 
+
+
+##### Fecha: 31/07/2026 (Semana 3 · Día 5 · Viernes)
+
+* Prompt: "Ayúdame con el ejercicio integrador del día 5: CRUD completo de sensores y lecturas siguiendo las convenciones REST, validación Pydantic con física real (rechazar unidades desconocidas y valores fuera de rango físico por tipo de sensor), y arquitectura en 4 capas."
+* Qué produjo la IA: SensorModel nuevo en db.py, el Protocol SensorRepository + su implementación SQLAlchemy, SensorService con sus propias excepciones de dominio, el router de sensores (CRUD completo), y una reescritura de ReadingService para que la validación de unidad y rango dependa del tipo de sensor realmente registrado en la base de datos (no de un valor fijo pasado a mano). Además, 32 tests en total, con 93.47% de cobertura.
+* Decisión: Acepté el diseño de que ReadingService ahora dependa también de SensorRepository (no solo de ReadingRepository), porque sin eso la validación física no tenía forma de saber si un sensor mide temperatura o humedad. Tuve que resolver 20 errores de ruff en el código nuevo: la mayoría eran imports desordenados que arregló --fix automáticamente, pero corregí a mano 2 líneas largas y un falso positivo de ruff con Query() de FastAPI en los valores por defecto (silenciado con noqa: B008, porque es el patrón oficial recomendado por FastAPI).
+
