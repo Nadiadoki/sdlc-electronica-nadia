@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
@@ -17,7 +17,7 @@ class SensorModel(Base):
     sensor_id: Mapped[str] = mapped_column(unique=True, index=True)
     sensor_type: Mapped[str]
     active: Mapped[bool] = mapped_column(default=True)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(UTC))
 
 
 class ReadingModel(Base):
@@ -27,5 +27,5 @@ class ReadingModel(Base):
     sensor_id: Mapped[str] = mapped_column(index=True)
     value: Mapped[float]
     unit: Mapped[str]
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(UTC))
     active: Mapped[bool] = mapped_column(default=True)
