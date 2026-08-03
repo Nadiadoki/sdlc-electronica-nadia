@@ -39,7 +39,7 @@ def create_reading(sensor_id: str, body: ReadingCreate, service: ServiceDep) -> 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
+            status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(exc)
         ) from exc
     return ReadingOut.model_validate(reading)
 
@@ -63,7 +63,7 @@ def update_reading(reading_id: int, body: ReadingUpdate, service: ServiceDep) ->
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)
+            status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(exc)
         ) from exc
     return ReadingOut.model_validate(reading)
 
