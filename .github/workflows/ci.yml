@@ -16,4 +16,4 @@ jobs:
       - name: Types
         run: mypy app --ignore-missing-imports
       - name: Tests
-        run: pytest --cov=app --cov-fail-under=80
+        run: python -m pytest --cov=app --cov-fail-under=80
