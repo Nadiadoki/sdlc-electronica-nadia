@@ -47,3 +47,14 @@ El driver original en C mezclaba parsing de protocolos, logging y comunicación 
 - **LSP:** `ModbusParser` y `NMEAParser` son intercambiables en cualquier lugar donde se espera un `MessageParser`.
 - **ISP:** no existe una interfaz "hace-todo"; cada clase implementa solo lo que necesita (`can_parse`/`parse`, o `open`/`close`/`is_open`/`read` en el caso del puerto).
 - **DIP:** `UartDevice` depende de las abstracciones `MessageParser` y `SerialPort`, no de implementaciones concretas — por eso se puede testear con un puerto falso (`FakePort`), sin hardware real y sin buffers globales compartidos entre pruebas.
+
+## Pipeline de CI
+[![CI](https://github.com/Nadiadoki/sdlc-electronica-nadia/actions/workflows/ci.yml/badge.svg)](https://github.com/Nadiadoki/sdlc-electronica-nadia/actions/workflows/ci.yml)
+
+## Despliegue en produccion
+URL publica: https://sensorhub-api-n5is.onrender.com
+
+- Health check: https://sensorhub-api-n5is.onrender.com/health
+- Documentacion interactiva (Swagger): https://sensorhub-api-n5is.onrender.com/docs
+
+Cada push a main despliega automaticamente en Render (Auto-Deploy).
