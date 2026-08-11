@@ -13,7 +13,7 @@ def test_generate_cycle_produce_una_lectura_por_sensor():
     )
     lecturas = simulador.generate_cycle()
     assert len(lecturas) == 3
-    assert {l.sensor_id for l in lecturas} == set(sensor_ids)
+    assert {reading.sensor_id for reading in lecturas} == set(sensor_ids)
 
 def test_generate_cycle_produce_al_menos_una_anomalia_en_muchos_ciclos():
     from anomaly import AnomalyDetector

@@ -1,6 +1,6 @@
+from alerts import AlertStrategy
 from anomaly import AnomalyDetector
 from sensors import SensorReading
-from alerts import AlertStrategy
 
 
 class AlertManager:
