@@ -162,3 +162,15 @@ Decisión: La acepté tal cual — preferí que reflejara los tropiezos reales e
 * Qué produjo la IA: La corrección de datetime.utcnow() → datetime.now(UTC) y HTTP\_422\_UNPROCESSABLE\_ENTITY → HTTP\_422\_UNPROCESSABLE\_CONTENT en una rama fix/deprecation-warnings; ayuda para redactar las observaciones al PR de Antonio (nota de trabajo pegada por accidente en el README, archivo .txt con contenido Markdown mal ubicado) y para responder sus 3 preguntas técnicas sobre mi código (Protocol/DIP con repositorios fake, el order\_by explícito antes de paginar, y el borrado lógico en deactivate\_reading).
 * Decisión: Acepté las correcciones de warnings tal cual, verificado con pytest (bajó de 29 a 1 warning, la única restante ajena a mi código). Para las respuestas a Antonio, no usé texto genérico: expliqué el porqué real de cada decisión de diseño (ej. el order\_by lo agregué a propósito por consistencia en la paginación, no como parche de un bug encontrado después). Este ejercicio de defender decisiones ante preguntas externas fue el punto central del día — no bastaba con que el código funcionara, tenía que poder justificarlo.
 
+
+
+#### Semana 4
+
+##### Fecha: 10/08/2026 (Semana 4 · Día 1 · Lunes)
+
+
+
+* Prompt: "Ayúdame a realizar la actividad del día lunes: contenerizar mi app con Docker desde cero, siguiendo la escalera de la semana (app local → corre en Docker)."
+* Qué produjo la IA: Un Dockerfile de 7 líneas para la app FastAPI (imagen base python:3.12-slim, WORKDIR /app, copia de requirements.txt e instalación de dependencias antes de copiar el resto del código para aprovechar la cache de capas de Docker, EXPOSE 8000 y CMD apuntando a uvicorn app.main:app). Además, guía paso a paso para instalar Docker Desktop y WSL2 (no los tenía instalados), y para diagnosticar y corregir dos problemas de entorno específicos de Windows/CMD.
+* Decisión: Tuve que resolver tres problemas de entorno antes de poder construir la imagen: (1) el Bloc de notas guardó el archivo como Dockerfile.txt en vez de Dockerfile, lo renombré con ren; (2) al pegar el contenido en Notepad todas las instrucciones quedaron en una sola línea, lo cual invalida el Dockerfile (FROM requires either one or three arguments) — lo resolví recreando el archivo línea por línea desde la terminal con una serie de comandos echo ... >> Dockerfile, evitando el pegado múltiple; (3) después de instalar Docker Desktop y WSL, el comando docker seguía sin reconocerse porque la ventana de CMD tenía cargado el PATH de antes de la instalación — se resolvió abriendo una terminal nueva. Con eso, docker build corrió limpio (11/11 pasos) y docker run -p 8000:8000 sirvió correctamente en /health, confirmando que la app funciona igual dentro del contenedor que corriendo local con uvicorn.
+
