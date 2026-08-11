@@ -184,7 +184,7 @@ Decisión: La acepté tal cual — preferí que reflejara los tropiezos reales e
 
 
 
-Fecha: 11/08/2026 (Semana 4 · Día 3 · Miércoles)
+###### Fecha: 11/08/2026 (Semana 4 · Día 3 · Miércoles)
 
 * Prompt: "Ayúdame con el día 3: pipeline de CI con GitHub Actions."
 * Qué produjo la IA: El archivo .github/workflows/ci.yml con un job que instala dependencias, corre lint (ruff), revisión de tipos (mypy) y tests con cobertura mínima del 80%, activado en cada push y pull\_request a main.
@@ -192,9 +192,17 @@ Fecha: 11/08/2026 (Semana 4 · Día 3 · Miércoles)
 
 
 
-##### Fecha: 11/08/2026 (Semana 4 · Día 4 · Jueves)
+###### Fecha: 11/08/2026 (Semana 4 · Día 4 · Jueves)
 
 * Prompt: "Ayúdame con el día 4: despliegue continuo en Render."
 * Qué produjo la IA: El archivo render.yaml con dos servicios (web sensorhub-api corriendo como Docker, y base de datos sensorhub-db, ambos en plan free, conectados automáticamente vía fromDatabase), y la actualización del Dockerfile para que el CMD corra alembic upgrade head \&\& uvicorn app.main:app antes de aceptar tráfico.
 * Decisión: El primer deploy en Render falló con NoSuchModuleError / error de conexión en Alembic porque migrations/env.py seguía usando la URL de ejemplo con la que Alembic se inicializa por defecto, en vez de la URL real de PostgreSQL de producción. Lo corregí importando la misma función get\_database\_url() que ya tenía en app/db.py y forzando config.set\_main\_option("sqlalchemy.url", get\_database\_url()) al inicio de env.py — así ambos (la app y las migraciones) leen la conexión de la misma forma, sin duplicar lógica. Probé el fix local con alembic upgrade head (usó SQLite sin problema) antes de subirlo. Después de subir el commit, Render lanzó el deploy solo (Auto-Deploy detectó el push), y esta vez quedó "Live" — confirmé con /health respondiendo desde la URL pública https://sensorhub-api-n5is.onrender.com. Esto fue exactamente el riesgo de "deploy verde, API muerta porque no existe la tabla" que advertía la guía del día, solo que en mi caso ni siquiera llegó a "verde" la primera vez porque Alembic truena antes de que el servidor arranque — lo cual en retrospectiva es mejor que fallar silenciosamente después.
+
+
+
+###### Fecha: 11/08/2026 (Semana 4 · Día 5 · Viernes — Evaluación 2)
+
+* Prompt: "Ayúdame con el día 5: Evaluación 2, pipeline de producción."
+* Qué produjo la IA: Una revisión de la rúbrica contra lo ya construido durante la semana, identificando que Dockerfile, docker-compose.yml, pipeline de CI en verde y despliegue continuo ya estaban cumplidos desde días anteriores; y el bloque final agregado al README.md con el badge del pipeline de CI y la sección de despliegue en producción (URL pública, link a /health y a /docs).
+* Decisión: Antes de dar por cerrado el criterio de "seguridad de configuración", revisé el historial de git buscando la palabra secret en docker-compose.yml y render.yaml con git log --all -p, y encontré POSTGRES\_PASSWORD: secret y la URL con sensor:secret@db. Decidí que esto no es una filtración real: es una contraseña de desarrollo local que solo vive dentro de la red interna de Docker en mi propia máquina, nunca sale a internet ni se usa en producción — la base de datos real de Render usa una contraseña generada por el proveedor que llega a mi app vía fromDatabase en render.yaml, sin quedar escrita en ningún archivo del repo. Con eso confirmé que sí cumplo el criterio de "configuración por variables de entorno" tal como lo pide la rúbrica, sin necesidad de rotar ni limpiar nada del historial.
 
