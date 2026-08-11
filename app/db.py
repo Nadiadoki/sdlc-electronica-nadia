@@ -1,7 +1,10 @@
 import os
 from datetime import UTC, datetime
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+
+
 def get_database_url() -> str:
     url = os.getenv("DATABASE_URL", "sqlite:///sensorhub.db")
     if url.startswith("postgres://"):

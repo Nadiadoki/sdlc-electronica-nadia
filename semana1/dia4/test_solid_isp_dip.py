@@ -1,11 +1,10 @@
 from solid_isp_dip import (
-    SensorReading,
-    SimpleSensor,
     AdvancedSensor,
     DataProcessor,
     InMemoryRepository,
+    SensorReading,
+    SimpleSensor,
 )
-
 
 # --- I: Interface Segregation ---
 

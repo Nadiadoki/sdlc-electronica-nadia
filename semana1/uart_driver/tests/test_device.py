@@ -1,5 +1,4 @@
 import pytest
-
 from config import UartConfig
 from device import UartDevice
 from parsers import ModbusParser

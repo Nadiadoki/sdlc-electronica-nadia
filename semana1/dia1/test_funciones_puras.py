@@ -1,13 +1,12 @@
 import pytest
-
-from lectura import Reading, SensorType
 from funciones_puras import (
     celsius_a_fahrenheit,
-    supera_umbral,
+    diferencia_valor,
     es_valida,
     serializar_reading,
-    diferencia_valor,
+    supera_umbral,
 )
+from lectura import Reading, SensorType
 
 
 def test_celsius_a_fahrenheit():

@@ -1,5 +1,4 @@
 import pytest
-
 from parsers import ModbusParser, NMEAParser
 
 
