@@ -206,3 +206,17 @@ Decisión: La acepté tal cual — preferí que reflejara los tropiezos reales e
 * Qué produjo la IA: Una revisión de la rúbrica contra lo ya construido durante la semana, identificando que Dockerfile, docker-compose.yml, pipeline de CI en verde y despliegue continuo ya estaban cumplidos desde días anteriores; y el bloque final agregado al README.md con el badge del pipeline de CI y la sección de despliegue en producción (URL pública, link a /health y a /docs).
 * Decisión: Antes de dar por cerrado el criterio de "seguridad de configuración", revisé el historial de git buscando la palabra secret en docker-compose.yml y render.yaml con git log --all -p, y encontré POSTGRES\_PASSWORD: secret y la URL con sensor:secret@db. Decidí que esto no es una filtración real: es una contraseña de desarrollo local que solo vive dentro de la red interna de Docker en mi propia máquina, nunca sale a internet ni se usa en producción — la base de datos real de Render usa una contraseña generada por el proveedor que llega a mi app vía fromDatabase en render.yaml, sin quedar escrita en ningún archivo del repo. Con eso confirmé que sí cumplo el criterio de "configuración por variables de entorno" tal como lo pide la rúbrica, sin necesidad de rotar ni limpiar nada del historial.
 
+
+
+
+
+##### semana 5
+
+Fecha: 15/08/2026 (Semana 5 · Día 2 · Martes)
+
+* Prompt: "Ayúdame con el día 2: Aider, IA con trazabilidad Git."
+* Qué produjo la IA: Guía para instalar Aider (pip install aider-install \&\& aider-install), y como se detectó que Aider requiere una API key de pago de un proveedor externo (OpenAI, Anthropic, etc.), guía paso a paso para instalar y usar GitHub Copilot Chat en VS Code por primera vez como alternativa contemplada en la propia guía. Con Copilot Chat generé la función fahrenheit\_to\_celsius(f: float) -> float en semana5/conversions.py, con el mismo estilo que celsius\_to\_fahrenheit.
+* Decisión: Decidí no crear una cuenta de pago solo para probar Aider en este ejercicio, y documenté el intento real en semana5/aider.md: sí logré instalarlo (versión 0.86.2, resolviendo en el camino que aider-install es un ejecutable y no un módulo de Python, y que hacía falta abrir una terminal nueva para que reconociera el comando por el PATH), pero me detuve justo antes de necesitar la API key. Completé el ejercicio equivalente con Copilot Chat, que nunca había usado antes. La diferencia clave que documenté: Aider hace commit automático y separado por cada cambio que hace la IA, dejando un git log donde se distingue con precisión qué hizo la IA de qué hice yo; con Copilot Chat el cambio queda mezclado en mi propio commit manual, sin esa separación automática — la trazabilidad ahí depende de que yo la documente a mano, como en este mismo registro.
+
+
+
