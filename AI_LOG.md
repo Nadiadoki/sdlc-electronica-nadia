@@ -212,11 +212,17 @@ Decisión: La acepté tal cual — preferí que reflejara los tropiezos reales e
 
 ##### semana 5
 
-Fecha: 15/08/2026 (Semana 5 · Día 2 · Martes)
+###### Fecha: 15/08/2026 (Semana 5 · Día 2 · Martes)
 
 * Prompt: "Ayúdame con el día 2: Aider, IA con trazabilidad Git."
 * Qué produjo la IA: Guía para instalar Aider (pip install aider-install \&\& aider-install), y como se detectó que Aider requiere una API key de pago de un proveedor externo (OpenAI, Anthropic, etc.), guía paso a paso para instalar y usar GitHub Copilot Chat en VS Code por primera vez como alternativa contemplada en la propia guía. Con Copilot Chat generé la función fahrenheit\_to\_celsius(f: float) -> float en semana5/conversions.py, con el mismo estilo que celsius\_to\_fahrenheit.
 * Decisión: Decidí no crear una cuenta de pago solo para probar Aider en este ejercicio, y documenté el intento real en semana5/aider.md: sí logré instalarlo (versión 0.86.2, resolviendo en el camino que aider-install es un ejecutable y no un módulo de Python, y que hacía falta abrir una terminal nueva para que reconociera el comando por el PATH), pero me detuve justo antes de necesitar la API key. Completé el ejercicio equivalente con Copilot Chat, que nunca había usado antes. La diferencia clave que documenté: Aider hace commit automático y separado por cada cambio que hace la IA, dejando un git log donde se distingue con precisión qué hizo la IA de qué hice yo; con Copilot Chat el cambio queda mezclado en mi propio commit manual, sin esa separación automática — la trazabilidad ahí depende de que yo la documente a mano, como en este mismo registro.
 
 
+
+###### Fecha: 14/08/2026 (Semana 5 · Día 3 · Miércoles)
+
+* Prompt: "Ayúdame con el día 3: code review y tests con IA."
+* Qué produjo la IA: Un code review completo de SQLAlchemySensorRepository con 4 hallazgos: (1) add() no manejaba sensor\_id duplicado, dejando escapar un IntegrityError crudo de SQLAlchemy hasta el cliente; (2) list() no validaba limit/offset, permitiendo consultas costosas o comportamiento indebido con valores extremos; (3) propuesta de validar sensor\_type dentro de update(); (4) propuesta de mover el manejo de transacciones fuera del repositorio (patrón Unit of Work).
+* Decisión: Implementé las correcciones 1 y 2 (captura de IntegrityError con rollback y re-lanzamiento como SensorAlreadyExistsError; límites seguros de limit máximo 500 y offset mínimo 0 en list()), y rechacé las propuestas 3 y 4 con justificación por escrito en AI\_CODE\_REVIEW.md: la validación de sensor\_type ya ocurre en la capa de schemas de Pydantic antes de llegar al repositorio, así que duplicarla ahí violaría SRP sin beneficio real; y el patrón Unit of Work es una mejora arquitectónica válida pero fuera del alcance de este checkpoint, dado que tocaría todos los services y el 93% de cobertura existente — quedó documentado como mejora futura, no aplicado. Agregué 5 tests nuevos cubriendo los casos borde (duplicado, límites de list(), doble desactivación), y terminé con 89 tests pasando y 100% de cobertura en el archivo revisado. La parte más pesada del día no fue el código en sí sino pelear con la terminal de Windows: varios símbolos especiales (>, <, |, y hasta un 2 pegado a un >> que CMD interpretó como redirección de errores) rompieron los comandos echo repetidamente, obligándome a reconstruir el archivo del repositorio en bloques pequeños y verificar cada uno con type antes de seguir.
 
