@@ -97,3 +97,6 @@ def test_add_with_valid_data_persists_sensor(db_session):
     result = repo.add(sensor_id="HUM-01", sensor_type="humidity")
     assert result.sensor_id == "HUM-01"
 ```
+
+
+## Comentario para merge
